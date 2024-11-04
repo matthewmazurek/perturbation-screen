@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "perturbation-screen"
+version = "0.1.0"
+description = ""
+authors = ["Matthew Mazurek <matthewmazurek@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pytest = "^8.3.3"
+dynamo-release = "^1.4.1"
+mpi4py = "^4.0.0"
+pydantic = "^2.9.2"
+
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^4.0.0"
+pytest = "^8.3.3"
+ipykernel = "^6.29.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -3,11 +3,6 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Poetry
-poetry.lock
-*.toml
-*.lock
-
 # C extensions
 *.so
 
