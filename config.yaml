@@ -1,0 +1,13 @@
+adata_file: 'data/fib_labeled.h5ad'
+group_by: 'sample_ident'
+genes_csv: 'data/genes_test_set.csv'
+perturbation_range: [-1000, 1000]
+perturbation_steps: 10
+perturbation_attempts: 3
+screen_type: 'DynamoPerturbationScreen'
+# screen_type: 'DummyPerturbationScreen'
+# log_file_template: 'log-b{rank}.log'
+# results_file_template: 'results-b{rank}.pkl'
+# compiled_results_file: 'results-compiled.pkl'
+working_directory: 'runs/test_dynamo_1'
+load_processed: true
