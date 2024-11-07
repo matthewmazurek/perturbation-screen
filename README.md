@@ -57,8 +57,6 @@ MPI is required for parallel processing. Install MPI or activate it if it's alre
   brew install open-mpi
   ```
 
----
-
 ### 3. Set up the Conda Environment
 
 It's recommended to use Conda for managing dependencies and ensuring compatibility with Python 3.10.
@@ -90,6 +88,8 @@ working_directory: './results'
 log_file_template: 'log-b{rank}.log'
 results_file_template: 'results-b{rank}.pkl'
 compiled_results_file: 'compiled_results.pkl'
+adata_file: 'data/fib_labeled.h5ad'
+load_processed: true
 group_by: 'cell_type'
 screen_type: 'DynamoPerturbationScreen'
 genes_csv: 'genes_list.csv'
@@ -98,10 +98,11 @@ perturbation_steps: 11
 perturbation_attempts: 3
 ```
 
+### Configuration Options
+
 - **working_directory**: Directory where results and logs will be stored.
 
 - **log_file_template**: Template for log file naming. You can use the following template variables:
-
   - `{rank}`: The rank of the MPI process.
   - `{size}`: The total number of MPI processes.
 
@@ -109,20 +110,33 @@ perturbation_attempts: 3
 
 - **compiled_results_file**: Name of the file where compiled results from all processes are saved.
 
-- **group_by**: The key in the AnnData object to group cells by.
+- **adata_file**: Path to your AnnData file (e.g., `'data/fib_labeled.h5ad'`).
+
+- **load_processed**: Boolean flag indicating whether to load preprocessed data from a previous session (`true`) or to preprocess the data during execution (`false`). If `false`, the preprocessed data will be broadcasted. Note that this may cause errors if the file size is too large.
+
+- **group_by**: The key in the AnnData object to group cells by (e.g., `'cell_type'`).
 
 - **screen_type**: The type of perturbation screen to use. Available options:
-
   - `'DynamoPerturbationScreen'`: Uses Dynamo for perturbation analysis.
   - `'DummyPerturbationScreen'`: A dummy implementation for testing purposes.
 
 - **genes_csv**: Path to a CSV file containing a list of genes to perturb.
 
-- **perturbation_range**: Range of expression values to test for perturbations.
+- **perturbation_range**: Range of expression values to test for perturbations (e.g., `[-1000, 1000]`).
 
-- **perturbation_steps**: Number of equidistant points to sample within the perturbation range.
+- **perturbation_steps**: Number of steps within the perturbation range (e.g., `11`).
 
-- **perturbation_attempts**: Number of attempts for each perturbation before passing.
+- **perturbation_attempts**: Number of attempts for each perturbation (e.g., `3`).
+
+### Available Template Variables
+
+The following variables can be used in the `log_file_template` and `results_file_template`:
+
+- `{rank}`: The rank of the MPI process (an integer starting from 0).
+- `{size}`: The total number of MPI processes.
+- `{timestamp}`: The current timestamp when the file is created.
+
+These variables allow you to customize file names to prevent overwriting and to make it easier to track logs and results from different processes.
 
 ## Usage
 
@@ -180,7 +194,7 @@ To create a custom perturbation screen, you need to extend the `PerturbationScre
 
 #### Example: DynamoPerturbationScreen
 
-An example implementation using Dynamo for perturbation analysis is provided as `DynamoPerturbationScreen`. Below is a simplified version:
+An example implementation using Dynamo for perturbation analysis is provided as `DynamoPerturbationScreen`:
 
 ```python
 from pathlib import Path
