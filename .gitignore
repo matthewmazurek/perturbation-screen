@@ -87,3 +87,7 @@ venv.bak/
 # Data & run directories (custom)
 data/
 runs/
+
+# Personal scripts
+*.sh
+*.slurm
